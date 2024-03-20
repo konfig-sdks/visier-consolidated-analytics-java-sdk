@@ -1,0 +1,746 @@
+openapi: 3.0.3
+info:
+  description: Visier APIs for managing consolidated analytics (CA) tenants.
+  license:
+    name: "Apache License, Version 2.0"
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  title: Visier Consolidated Analytics APIs
+  version: 22222222.99201.1200
+  x-api-status-urls: false
+servers:
+- url: "https://{vanity-name}.api.visier.io"
+  variables:
+    vanity-name:
+      default: vanity
+tags:
+- name: ConsolidatedAnalyticsV1Alpha
+paths:
+  /v1alpha/admin/consolidated-analytics/tenants:
+    get:
+      description: |-
+        This API allows you to retrieve the full list of consolidated analytics tenants in your administrating tenant.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_ListTenants
+      parameters:
+      - description: The maximum number of tenants to return. The maximum value is
+          1000. Default is 400.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: The starting index of the first tenant to return. Default is
+          0.
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPITenantListResponseDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Retrieve a list of all consolidated analytics tenants
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--v1alpha-admin-consolidated-analytics-tenants
+      x-accepts: application/json
+    post:
+      description: |-
+        This API allows you to create a consolidated analytics tenant.
+
+         A new CA tenant has no source tenants and no excluded sources.
+
+         **Note:** CA tenant codes must have a prefix of CA. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+         is the consolidated analytic tenant code.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_CreateTenant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsolidatedAnalyticsAPITenantCreateRequestDTO'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPITenantCreateRequestDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Create a consolidated analytics tenant
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-post--v1alpha-admin-consolidated-analytics-tenants
+      x-content-type: application/json
+      x-accepts: application/json
+  /v1alpha/admin/consolidated-analytics/tenants/:tenantId/excluded-sources:
+    delete:
+      description: |-
+        This API removes excluded sources from the list of excluded sources for a consolidated analytics tenant.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_RemoveExcludedSources
+      parameters:
+      - description: |-
+          The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+           is the consolidated analytic tenant code.
+        explode: true
+        in: query
+        name: tenantId
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExcludedSourcesBody'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPIExcludedSourcesListDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Remove excluded sources from a consolidated analytics tenants
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--v1alpha-admin-consolidated-analytics-tenants-:tenantId-excluded-sources
+      x-content-type: application/json
+      x-accepts: application/json
+    get:
+      description: |-
+        This API allows you to retrieve a CA tenant's excluded sources.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_ListExcludedSources
+      parameters:
+      - description: |-
+          The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+           is the consolidated analytic tenant code.
+        explode: true
+        in: query
+        name: tenantId
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPIExcludedSourcesListDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Retrieve a consolidated analytics tenant's excluded sources
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--v1alpha-admin-consolidated-analytics-tenants-:tenantId-excluded-sources
+      x-accepts: application/json
+    patch:
+      description: |-
+        This API adds excluded sources to the list of excluded sources for a consolidated analytics tenant.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_AddExcludedSources
+      parameters:
+      - description: |-
+          The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+           is the consolidated analytic tenant code.
+        explode: true
+        in: query
+        name: tenantId
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExcludedSourcesBody'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPIExcludedSourcesListDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Add excluded sources to a consolidated analytics tenant
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-patch--v1alpha-admin-consolidated-analytics-tenants-:tenantId-excluded-sources
+      x-content-type: application/json
+      x-accepts: application/json
+    put:
+      description: |-
+        This API defines the excluded sources for a consolidated analytics tenant.
+
+         After you create a CA tenant, you may optionally define a list of excluded sources. The excluded sources are the sources whose data is excluded from the CA tenant.
+         You can also use this API to replace the list of excluded sources for an existing CA tenant.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_SetExcludedSources
+      parameters:
+      - description: |-
+          The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+           is the consolidated analytic tenant code.
+        explode: true
+        in: query
+        name: tenantId
+        required: false
+        schema:
+          type: string
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExcludedSourcesBody'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPIExcludedSourcesListDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Set a consolidated analytics tenant's excluded sources
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-put--v1alpha-admin-consolidated-analytics-tenants-:tenantId-excluded-sources
+      x-content-type: application/json
+      x-accepts: application/json
+  /v1alpha/admin/consolidated-analytics/tenants/:tenantId/source-tenants:
+    delete:
+      description: |-
+        This API removes source tenants from the list of source tenants for a consolidated analytics tenant.
+
+         If successful, the response returns an updated list of source tenants.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_RemoveSourceTenants
+      parameters:
+      - description: |-
+          The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+           is the consolidated analytic tenant code.
+        explode: true
+        in: query
+        name: tenantId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of source tenants to return. The maximum value
+          is 1000. Default is 400.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantCodeBody'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPISourceTenantListDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Remove source tenants from a consolidated analytics tenants
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-delete--v1alpha-admin-consolidated-analytics-tenants-:tenantId-source-tenants
+      x-content-type: application/json
+      x-accepts: application/json
+    get:
+      description: |-
+        This API allows you to retrieve a CA tenant's source tenants.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_ListSourceTenants
+      parameters:
+      - description: |-
+          The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+           is the consolidated analytic tenant code.
+        explode: true
+        in: query
+        name: tenantId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of source tenants to return. The maximum value
+          is 1000. Default is 400.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - description: The starting index of the first source tenant to return. Default
+          is 0.
+        explode: true
+        in: query
+        name: start
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPISourceTenantListDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Retrieve a consolidated analytics tenant's source tenants
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-get--v1alpha-admin-consolidated-analytics-tenants-:tenantId-source-tenants
+      x-accepts: application/json
+    patch:
+      description: |-
+        This API adds source tenants to the list of source tenants for a consolidated analytics tenant.
+
+         If successful, the response returns an updated list of source tenants.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_AddSourceTenants
+      parameters:
+      - description: |-
+          The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+           is the consolidated analytic tenant code.
+        explode: true
+        in: query
+        name: tenantId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of source tenants to return. The maximum value
+          is 1000. Default is 400.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantCodeBody'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPISourceTenantListDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Add source tenants to a consolidated analytics tenant
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-patch--v1alpha-admin-consolidated-analytics-tenants-:tenantId-source-tenants
+      x-content-type: application/json
+      x-accepts: application/json
+    put:
+      description: |-
+        This API defines the source tenants for a consolidated analytics tenant.
+
+         After you create a CA tenant, you must define a list of its source tenants. The source tenants are the tenants whose data is aggregated in the CA tenant.
+         You can also use this API to replace the list of source tenants for an existing CA tenant.
+
+         If successful, the response returns an updated list of source tenants.
+
+         <br>**Note:** <em>This API is in **alpha**. While in alpha, APIs may change in a breaking way without notice; functionality may be removed, and no deprecation notices will be issued.
+         If you are interested in using this API, please contact your Customer Success Manager (CSM).</em>
+      operationId: ConsolidatedAnalyticsV1Alpha_SetSourceTenants
+      parameters:
+      - description: |-
+          The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+           is the consolidated analytic tenant code.
+        explode: true
+        in: query
+        name: tenantId
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The maximum number of source tenants to return. The maximum value
+          is 1000. Default is 400.
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantCodeBody'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsolidatedAnalyticsAPISourceTenantListDTO'
+          description: OK
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+          description: Default error response
+      summary: Set a consolidated analytics tenant's source tenants
+      tags:
+      - ConsolidatedAnalyticsV1Alpha
+      x-konfig-operation-can-have-single-parameter: true
+      x-konfig-single-parameter-schema: konfig-generated-schema-single-parameter-schema-put--v1alpha-admin-consolidated-analytics-tenants-:tenantId-source-tenants
+      x-content-type: application/json
+      x-accepts: application/json
+components:
+  schemas:
+    ConsolidatedAnalyticsAPIExcludedSourcesListDTO:
+      example:
+        excludedSources:
+        - excludedSources
+        - excludedSources
+      properties:
+        excludedSources:
+          description: A list of a CA tenant's excluded sources.
+          items:
+            type: string
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ConsolidatedAnalyticsAPISourceTenantListDTO:
+      example:
+        tenantCodes:
+        - tenantCodes
+        - tenantCodes
+      properties:
+        tenantCodes:
+          description: A list of a CA tenant's source tenants codes
+          items:
+            type: string
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ConsolidatedAnalyticsAPITenantCreateRequestDTO:
+      example:
+        tenantCode: tenantCode
+      properties:
+        tenantCode:
+          description: |-
+            The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+             is the consolidated analytic tenant code.
+          type: string
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ConsolidatedAnalyticsAPITenantListResponseDTO:
+      example:
+        tenantCodes:
+        - tenantCodes
+        - tenantCodes
+      properties:
+        tenantCodes:
+          description: A list of CA tenants codes.
+          items:
+            type: string
+          type: array
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    ExcludedSourcesBody:
+      example:
+        excludedSources:
+        - excludedSources
+        - excludedSources
+      properties:
+        excludedSources:
+          description: A list of a CA tenant's excluded sources.
+          items:
+            type: string
+          type: array
+      type: object
+    GoogleProtobufAny:
+      additionalProperties: true
+      description: Contains an arbitrary serialized message along with a @type that
+        describes the type of the serialized message.
+      properties:
+        '@type':
+          description: The type of the serialized message.
+          type: string
+      type: object
+    TenantCodeBody:
+      example:
+        tenantCodes:
+        - tenantCodes
+        - tenantCodes
+      properties:
+        tenantCodes:
+          description: A list of a CA tenant's source tenants codes. The maximum length
+            is 1000.
+          items:
+            type: string
+          type: array
+      type: object
+    Status:
+      description: The response structure for errors.
+      properties:
+        errorCode:
+          description: Error classification.
+          type: string
+        message:
+          description: Error message describing the root cause of the error.
+          type: string
+        rci:
+          description: Optional root cause identifier.
+          type: string
+      type: object
+      x-konfig-is-used-in-successful-response: true
+    konfig-generated-schema-single-parameter-schema-get--v1alpha-admin-consolidated-analytics-tenants:
+      properties:
+        limit:
+          format: int32
+          type: integer
+        start:
+          format: int32
+          type: integer
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - limit
+      - start
+    konfig-generated-schema-single-parameter-schema-post--v1alpha-admin-consolidated-analytics-tenants:
+      properties:
+        tenantCode:
+          description: |-
+            The ID of the tenant. For example, WFF_{XXX}~CA{YYY} where {XXX} is the administrating tenant code and {YYY}
+             is the consolidated analytic tenant code.
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter: []
+    konfig-generated-schema-single-parameter-schema-delete--v1alpha-admin-consolidated-analytics-tenants-:tenantId-excluded-sources:
+      properties:
+        tenantId:
+          type: string
+        excludedSources:
+          description: A list of a CA tenant's excluded sources.
+          items:
+            type: string
+          type: array
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tenantId
+    konfig-generated-schema-single-parameter-schema-get--v1alpha-admin-consolidated-analytics-tenants-:tenantId-excluded-sources:
+      properties:
+        tenantId:
+          type: string
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tenantId
+    konfig-generated-schema-single-parameter-schema-patch--v1alpha-admin-consolidated-analytics-tenants-:tenantId-excluded-sources:
+      properties:
+        tenantId:
+          type: string
+        excludedSources:
+          description: A list of a CA tenant's excluded sources.
+          items:
+            type: string
+          type: array
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tenantId
+    konfig-generated-schema-single-parameter-schema-put--v1alpha-admin-consolidated-analytics-tenants-:tenantId-excluded-sources:
+      properties:
+        tenantId:
+          type: string
+        excludedSources:
+          description: A list of a CA tenant's excluded sources.
+          items:
+            type: string
+          type: array
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tenantId
+    konfig-generated-schema-single-parameter-schema-delete--v1alpha-admin-consolidated-analytics-tenants-:tenantId-source-tenants:
+      properties:
+        tenantId:
+          type: string
+        limit:
+          format: int32
+          type: integer
+        tenantCodes:
+          description: A list of a CA tenant's source tenants codes. The maximum length
+            is 1000.
+          items:
+            type: string
+          type: array
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tenantId
+      - limit
+    konfig-generated-schema-single-parameter-schema-get--v1alpha-admin-consolidated-analytics-tenants-:tenantId-source-tenants:
+      properties:
+        tenantId:
+          type: string
+        limit:
+          format: int32
+          type: integer
+        start:
+          format: int32
+          type: integer
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tenantId
+      - limit
+      - start
+    konfig-generated-schema-single-parameter-schema-patch--v1alpha-admin-consolidated-analytics-tenants-:tenantId-source-tenants:
+      properties:
+        tenantId:
+          type: string
+        limit:
+          format: int32
+          type: integer
+        tenantCodes:
+          description: A list of a CA tenant's source tenants codes. The maximum length
+            is 1000.
+          items:
+            type: string
+          type: array
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tenantId
+      - limit
+    konfig-generated-schema-single-parameter-schema-put--v1alpha-admin-consolidated-analytics-tenants-:tenantId-source-tenants:
+      properties:
+        tenantId:
+          type: string
+        limit:
+          format: int32
+          type: integer
+        tenantCodes:
+          description: A list of a CA tenant's source tenants codes. The maximum length
+            is 1000.
+          items:
+            type: string
+          type: array
+      type: object
+      x-do-not-generate: true
+      x-konfig-is-parameter:
+      - tenantId
+      - limit
+
